@@ -12,17 +12,16 @@ import com.api.model.BookingDetailsDTO;
 import com.api.utils.ExcelUtils;
 import com.api.utils.JsonReader;
 import com.api.utils.ResponseHandler;
-import com.api.utils.TestContext;
+import com.api.context.TestContext;
 
 import io.cucumber.java.en.When;
 import io.cucumber.datatable.DataTable;
 
-public class UpdateBookingStepdefinition {
-	private TestContext context;
+public class UpdateBookingStepdefinition  extends BaseSteps {
 	private static final Logger LOG = LogManager.getLogger(UpdateBookingStepdefinition.class);
 	
 	public UpdateBookingStepdefinition(TestContext context) {
-		this.context = context;
+		super(context);
 	}
 
 	@When("user creates a auth token with credential {string} & {string}")
@@ -31,10 +30,10 @@ public class UpdateBookingStepdefinition {
 		credentials.put("username", username);
 		credentials.put("password", password);
 		context.response = context.requestSetup().body(credentials.toString())
-				.when().post(context.session.get("endpoint").toString());
+				.when().post(context.get("endpoint").toString());
 		String token = context.response.path("token");
 		LOG.info("Auth Token: "+token);
-		context.session.put("token", "token="+token);	
+		context.put("token", "token="+token);
 	}
 
 	@When("user updates the details of a booking")
@@ -52,10 +51,10 @@ public class UpdateBookingStepdefinition {
 		bookingBody.put("additionalneeds", bookingData.get("additionalneeds"));
 
 		context.response = context.requestSetup()
-				.header("Cookie", context.session.get("token").toString())
-				.pathParam("bookingID", context.session.get("bookingID"))
+				.header("Cookie", context.get("token").toString())
+				.pathParam("bookingID", context.get("bookingID"))
 				.body(bookingBody.toString())
-				.when().put(context.session.get("endpoint")+"/{bookingID}");
+				.when().put(context.get("endpoint")+"/{bookingID}");
 
 		BookingDetailsDTO bookingDetailsDTO = ResponseHandler.deserializedResponse(context.response, BookingDetailsDTO.class);
 		assertNotNull("Booking not created", bookingDetailsDTO);
@@ -65,23 +64,23 @@ public class UpdateBookingStepdefinition {
 	public void userUpdatesTheBookingDetailsUsingDataFromExcel(String dataKey) throws Exception {
 		Map<String,String> excelDataMap = ExcelUtils.getData(dataKey);
 		context.response = context.requestSetup()
-				.header("Cookie", context.session.get("token").toString())
-				.pathParam("bookingID", context.session.get("bookingID"))
+				.header("Cookie", context.get("token").toString())
+				.pathParam("bookingID", context.get("bookingID"))
 				.body(excelDataMap.get("requestBody"))
-				.when().put(context.session.get("endpoint")+"/{bookingID}");
+				.when().put(context.get("endpoint")+"/{bookingID}");
 		
 		BookingDetailsDTO bookingDetailsDTO = ResponseHandler.deserializedResponse(context.response, BookingDetailsDTO.class);
 		assertNotNull("Booking not created", bookingDetailsDTO);
-		context.session.put("excelDataMap", excelDataMap);
+		context.put("excelDataMap", excelDataMap);
 	}
 	
 	@When("user updates the booking details using data {string} from JSON file {string}")
 	public void userUpdatesTheBookingDetailsUsingDataFromJSONFile(String dataKey, String JSONFile) {
 		context.response = context.requestSetup()
-				.header("Cookie", context.session.get("token").toString())
-				.pathParam("bookingID", context.session.get("bookingID"))
+				.header("Cookie", context.get("token").toString())
+				.pathParam("bookingID", context.get("bookingID"))
 				.body(JsonReader.getRequestBody(JSONFile,dataKey))
-				.when().put(context.session.get("endpoint")+"/{bookingID}");
+				.when().put(context.get("endpoint")+"/{bookingID}");
 		
 		BookingDetailsDTO bookingDetailsDTO = ResponseHandler.deserializedResponse(context.response, BookingDetailsDTO.class);
 		assertNotNull("Booking not created", bookingDetailsDTO);	
@@ -94,10 +93,10 @@ public class UpdateBookingStepdefinition {
 		body.put("lastname", lastName);
 		
 		context.response = context.requestSetup()
-				.header("Cookie", context.session.get("token").toString())
-				.pathParam("bookingID", context.session.get("bookingID"))
+				.header("Cookie", context.get("token").toString())
+				.pathParam("bookingID", context.get("bookingID"))
 				.body(body.toString())
-				.when().patch(context.session.get("endpoint")+"/{bookingID}");
+				.when().patch(context.get("endpoint")+"/{bookingID}");
 		
 		BookingDetailsDTO bookingDetailsDTO = ResponseHandler.deserializedResponse(context.response, BookingDetailsDTO.class);
 		assertNotNull("Booking not created", bookingDetailsDTO);

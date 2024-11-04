@@ -1,7 +1,7 @@
 @bookerAPI @viewBooking
 Feature: To view the restful-booker booking details
 
-  @viewAllBookingIDs
+  @viewAllBookingIDs @123
   Scenario: To view all the booking IDs
     Given user has access to endpoint "/booking"
     When user makes a request to view booking IDs

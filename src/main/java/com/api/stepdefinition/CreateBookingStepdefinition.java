@@ -12,19 +12,19 @@ import com.api.model.BookingDTO;
 import com.api.utils.ExcelUtils;
 import com.api.utils.JsonReader;
 import com.api.utils.ResponseHandler;
-import com.api.utils.TestContext;
+import com.api.context.TestContext;
 
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.module.jsv.JsonSchemaValidator;
 
-public class CreateBookingStepdefinition {
-	private TestContext context;
+public class CreateBookingStepdefinition extends BaseSteps {
+
 	private static final Logger LOG = LogManager.getLogger(CreateBookingStepdefinition.class);
 
 	public CreateBookingStepdefinition(TestContext context) {
-		this.context = context;
+		super(context);
 	}
 
 	@When("user creates a booking")
@@ -42,12 +42,12 @@ public class CreateBookingStepdefinition {
 		bookingBody.put("additionalneeds", bookingData.get("additionalneeds"));
 
 		context.response = context.requestSetup().body(bookingBody.toString())
-				.when().post(context.session.get("endpoint").toString());
+				.when().post(context.get("endpoint").toString());
 
 		BookingDTO bookingDTO = ResponseHandler.deserializedResponse(context.response, BookingDTO.class);
 		assertNotNull("Booking not created", bookingDTO);
 		LOG.info("Newly created booking ID: "+bookingDTO.getBookingid());
-		context.session.put("bookingID", bookingDTO.getBookingid());
+		context.put("bookingID", bookingDTO.getBookingid());
 		validateBookingData(new JSONObject(bookingData), bookingDTO);
 	}
 
@@ -67,30 +67,30 @@ public class CreateBookingStepdefinition {
 	public void userCreatesABookingUsingDataFromExcel(String dataKey) throws Exception {
 		Map<String,String> excelDataMap = ExcelUtils.getData(dataKey);
 		context.response = context.requestSetup().body(excelDataMap.get("requestBody"))
-				.when().post(context.session.get("endpoint").toString());
+				.when().post(context.get("endpoint").toString());
 
 		BookingDTO bookingDTO = ResponseHandler.deserializedResponse(context.response, BookingDTO.class);
 		assertNotNull("Booking not created", bookingDTO);
 		LOG.info("Newly created booking ID: "+bookingDTO.getBookingid());
-		context.session.put("bookingID", bookingDTO.getBookingid());
+		context.put("bookingID", bookingDTO.getBookingid());
 		validateBookingData(new JSONObject(excelDataMap.get("responseBody")), bookingDTO);
-		context.session.put("excelDataMap", excelDataMap);
+		context.put("excelDataMap", excelDataMap);
 	}
 
 	@Then("user validates the response with JSON schema from Excel")
 	public void userValidatesTheResponseWithJSONSchemaFromExcel() {
-		context.response.then().assertThat().body(JsonSchemaValidator.matchesJsonSchema(((Map<String,String>) context.session.get("excelDataMap")).get("responseSchema")));
+		context.response.then().assertThat().body(JsonSchemaValidator.matchesJsonSchema(((Map<String,String>) context.get("excelDataMap")).get("responseSchema")));
 		LOG.info("Successfully Validated schema from Excel");
 	}
 
 	@When("user creates a booking using data {string} from JSON file {string}")
 	public void userCreatesABookingUsingDataFromJSONFile(String dataKey, String JSONFile) {
 		context.response = context.requestSetup().body(JsonReader.getRequestBody(JSONFile,dataKey))
-				.when().post(context.session.get("endpoint").toString());
+				.when().post(context.get("endpoint").toString());
 
 		BookingDTO bookingDTO = ResponseHandler.deserializedResponse(context.response, BookingDTO.class);
 		assertNotNull("Booking not created", bookingDTO);
 		LOG.info("Newly created booking ID: "+bookingDTO.getBookingid());	
-		context.session.put("bookingID", bookingDTO.getBookingid());
+		context.put("bookingID", bookingDTO.getBookingid());
 	}
 }
