@@ -73,6 +73,8 @@ public class TestContext {
         delete()       Sends a DELETE request. Example: .delete("/users/123")
         response()     Returns the response of a request.       Example: Response response = .get("/users")
         statusCode()   Asserts the status code of the response. Example: response.then().statusCode(200)
+       ----------------------------------------------------------------------------
+          response.then().assertThat().body(matchesJsonSchemaInClasspath("schema.json"));
         -------------------------------------------------------------------------------------------------------
         ASString()
         String responseBody = response.getBody().asString();

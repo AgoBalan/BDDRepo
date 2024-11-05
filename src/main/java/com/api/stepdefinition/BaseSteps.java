@@ -5,7 +5,6 @@ import io.cucumber.java.*;
 
 public class BaseSteps {
     protected TestContext context;
-    protected Scenario scenario;
 
     public BaseSteps(TestContext testContext) {
         this.context = testContext;

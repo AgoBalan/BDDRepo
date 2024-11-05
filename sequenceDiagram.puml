@@ -1,0 +1,12 @@
+@startuml
+actor User
+User -> Maven_Plugin: TriggersExecution
+Maven_Plugin -> TestRunner.java: LooksForFileWithNameTest
+TestRunner.java -> TestListener.java: Set up listener to log execution status for debugging
+TestRunner.java -> hooks.java: @Before and @After Methods setup
+hooks.java ->TestContext.java: Initilaze test context
+hooks.java ->BaseSteps.java: Initilaze base step and set the context
+Server -> Database: Query
+Database -> Server: Response
+Server -> User: Response
+@enduml

@@ -14,7 +14,7 @@ public class ResponseHandler {
 		try {
 			responseDeserialized = (T) mapper.readValue(response.asString(), T);
 			String jsonStr = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(responseDeserialized); // Pretty print JSON
-			System.out.println("Handling Response: \n"+responseDeserialized.toString());
+			//System.out.println("Handling Response: \n"+responseDeserialized.toString());
 		} catch (IOException e) {
 			e.printStackTrace(System.out);
 		}

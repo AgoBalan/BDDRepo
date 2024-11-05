@@ -1,7 +1,0 @@
-
-@bookerAPI @viewBooking @viewAllBookingIDs @123
-Scenario: To view all the booking IDs           # src/test/resources/features/ViewBookingDetails.feature:5
-  Given user has access to endpoint "/booking"  # com.api.stepdefinition.ViewBookingDetailsStepdefinition.userHasAccessToEndpoint(java.lang.String)
-  When user makes a request to view booking IDs # com.api.stepdefinition.ViewBookingDetailsStepdefinition.userMakesARequestToViewBookingIDs()
-  Then user should get the response code 200    # com.api.stepdefinition.ViewBookingDetailsStepdefinition.userShpuldGetTheResponseCode(java.lang.Integer)
-  And user should see all the booking IDs       # com.api.stepdefinition.ViewBookingDetailsStepdefinition.userShouldSeeAllTheBookingIDS()
