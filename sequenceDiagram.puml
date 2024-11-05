@@ -1,12 +1,13 @@
 @startuml
 actor User
-User -> Maven_Plugin: TriggersExecution
-Maven_Plugin -> TestRunner.java: LooksForFileWithNameTest
+User -> Maven_SurefirePlugin: TriggersExecution
+User -> Maven_cucumberPlugin: Set up report generation
+Maven_SurefirePlugin -> TestRunner.java: LooksForFileWithNameTest
 TestRunner.java -> TestListener.java: Set up listener to log execution status for debugging
 TestRunner.java -> hooks.java: @Before and @After Methods setup
 hooks.java ->TestContext.java: Initilaze test context
 hooks.java ->BaseSteps.java: Initilaze base step and set the context
-Server -> Database: Query
-Database -> Server: Response
-Server -> User: Response
+hooks.java ->BeforeAfterMethod: Set up logs to attach to report
+TestRunner.java -> FeatureFile: trigger test execution
+FeatureFile -> StepDefinition: LInk to step definition
 @enduml

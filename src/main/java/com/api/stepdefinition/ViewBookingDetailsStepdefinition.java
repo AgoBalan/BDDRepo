@@ -40,7 +40,8 @@ public class ViewBookingDetailsStepdefinition extends  BaseSteps {
 	}
 
 	@Then("user should see all the booking IDs")
-	public void userShouldSeeAllTheBookingIDS() {		
+	public void userShouldSeeAllTheBookingIDS() {
+		LOG.info(context.response);
 		BookingID[] bookingIDs = ResponseHandler.deserializedResponse(context.response, BookingID[].class);
 		assertNotNull("Booking ID not found!!", bookingIDs);		
 	}

@@ -38,7 +38,7 @@ public class Hooks {
 
     @After
     public void tearDown(Scenario scenario) {
-        context.clear();
+
         try {
             File logFile = new File("target/logs/execution.log");
             if (logFile.exists()) {
@@ -49,5 +49,7 @@ public class Hooks {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        context.clear();
     }
 }
