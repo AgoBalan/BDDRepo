@@ -3,7 +3,7 @@
     "line": 2,
     "elements": [
       {
-        "start_timestamp": "2024-11-05T04:47:23.958Z",
+        "start_timestamp": "2024-11-06T01:23:18.606Z",
         "line": 5,
         "name": "To view all the booking IDs",
         "description": "",
@@ -13,7 +13,7 @@
         "steps": [
           {
             "result": {
-              "duration": 10000900,
+              "duration": 26854100,
               "status": "passed"
             },
             "line": 6,
@@ -31,7 +31,7 @@
           },
           {
             "result": {
-              "duration": 3047181900,
+              "duration": 3076983400,
               "status": "passed"
             },
             "line": 7,
@@ -43,7 +43,7 @@
           },
           {
             "result": {
-              "duration": 2022500,
+              "duration": 1999100,
               "status": "passed"
             },
             "line": 8,
@@ -61,7 +61,7 @@
           },
           {
             "result": {
-              "duration": 307989800,
+              "duration": 225185300,
               "status": "passed"
             },
             "line": 9,

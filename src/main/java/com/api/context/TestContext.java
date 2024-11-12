@@ -7,11 +7,16 @@ import com.github.dzieciou.testing.curl.Options;
 import io.restassured.RestAssured;
 import io.restassured.config.LogConfig;
 import io.restassured.config.RestAssuredConfig;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.response.Response;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static io.restassured.RestAssured.given;
+import static io.restassured.config.SSLConfig.sslConfig;
 
 public class TestContext {
     private static final ThreadLocal<TestContext> instance = ThreadLocal.withInitial(TestContext::new);
@@ -45,6 +50,50 @@ public class TestContext {
     }
 
     public RequestSpecification requestSetup() {
+      /*  HashMap<String,String> headers = new HashMap<>();
+        headers.put("h1","value1");
+        HashMap<String,String> quetyParams = new HashMap<>();
+        headers.put("h1","value1");
+
+        RestAssuredConfig config = RestAssured.config().sslConfig(sslConfig().relaxedHTTPSValidation());
+
+        given().log().all()
+                .filter(new RequestLoggingFilter()).filter(new ResponseLoggingFilter())
+                .config(config)
+                .relaxedHTTPSValidation()
+                .baseUri("http://www.ggole.com")
+                        .basePath("/v1")
+                                .queryParam("key","value").queryParams(quetyParams)
+                                        .pathParams("id",12345)
+                                                .header("claims","Dummy")
+                .headers(headers)
+                        .contentType("json")
+                                .accept("json")
+                //Basic Authentication send user id and a password encoded in Base64.
+                .auth().basic("encodedUname","Encodedpwd")
+                //a server might use a challenge-response mechanism to indicate explicitly when the consumer needs authenticate to access the resource.
+                .auth().preemptive().basic("encodedUname","Encodedpwd")
+                //Digest Authentication
+                //Even though this is also considered a “weak” authentication method, using Digest Authentication represents an advantage over the basic protocol.
+                .auth().digest("nmae","pwd")
+                //Form Authentication, When the user submits the form, the browser executes a POST request with the information.
+                .auth().form("name","pwd")
+                //OAuth is technically an authorization framework, and it doesn’t define any mechanism for authenticating a user.
+                .auth().oauth2("token")
+               .body("as")
+               .multiPart(new File("test.txt"))
+               .post()
+               //.statusLine()
+               //.statusCode()
+               //.getStatusCode()
+
+               .getBody().asString();
+        response.jsonPath().get();
+        response.jsonPath().getInt("id");
+        response.jsonPath().getString("name");
+        response.jsonPath().getList("accounts");
+
+
         /*
         given()        Initializes a request specification. Example: RestAssured.given()
         baseURI        Sets the base URI for the API        Example: RestAssured.baseURI = "https://api.example.com"
@@ -138,7 +187,7 @@ public class TestContext {
       //  RestAssured.config = RestAssured.config().logConfig(LogConfig.logConfig().enableLoggingOfRequestAndResponseIfValidationFails());
 
         RestAssured.baseURI = PropertiesFile.getProperty("baseURL");
-        return RestAssured.given()
+        return given()
                 .config(config)
                 .filter(new RestAssuredRequestFilter())
                 //.log().all() // Logs all detail

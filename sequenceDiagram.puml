@@ -1,7 +1,7 @@
 @startuml
 actor User
-User -> Maven_SurefirePlugin: TriggersExecution
-User -> Maven_cucumberPlugin: Set up report generation
+UserOrJenkins -> Maven_SurefirePlugin: TriggersExecution
+UserOrJenkins -> Maven_cucumberPlugin: Set up report generation
 Maven_SurefirePlugin -> TestRunner.java: LooksForFileWithNameTest
 TestRunner.java -> TestListener.java: Set up listener to log execution status for debugging
 TestRunner.java -> hooks.java: @Before and @After Methods setup
